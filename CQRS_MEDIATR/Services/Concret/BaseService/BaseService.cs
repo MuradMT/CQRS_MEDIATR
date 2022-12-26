@@ -7,50 +7,53 @@ using System.Linq.Expressions;
 
 namespace CQRS_MEDIATR.Services.Concret.BaseService
 {
-    public class BaseService<TContext, TEntity> : IBaseService<TEntity>
-        where TContext : DbContext, new()
+    public class BaseService<TEntity> : IBaseService<TEntity>
         where TEntity : class, new()
 
     {
+        private DataContext _dataContext;
+        public BaseService(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
         public async Task Add(TEntity entity)
         {
-            using (TContext context = new TContext())
-            {
-                context.Entry(entity).State = EntityState.Added;
-                await context.SaveChangesAsync();
-            }
+                await _dataContext.AddAsync(entity);
+                await _dataContext.SaveChangesAsync();
         }
 
         public async Task Delete(TEntity entity)
         {
-            using (TContext context = new TContext())
-            {
-                context.Entry(entity).State = EntityState.Deleted;
-                await context.SaveChangesAsync();
-            }
+
+            var ent=_dataContext.Set<TEntity>().Find(entity);
+            _dataContext.Remove(ent);
+            await _dataContext.SaveChangesAsync();
+
         }
 
-        public Task<TEntity> GetStudent(Expression<Func<TEntity, bool>> expression)
+        public async Task<TEntity> GetStudent(Expression<Func<TEntity, bool>> expression)
         {
-            throw new NotImplementedException();
+            
+                return await _dataContext.Set<TEntity>().FirstOrDefaultAsync(expression);
+            
         }
 
         public async Task<List<TEntity>> GetStudents(Expression<Func<TEntity, bool>> expression = null)
         {
-            using (TContext context = new TContext())
-            {
-                return expression == null ? await context.:
-                    await context.Set<TEntity>.Where(expression).ToListAsync();
-            }
+            
+                return expression == null ? await _dataContext.Set<TEntity>().ToListAsync() :
+                    await _dataContext.Set<TEntity>().Where(expression).ToListAsync();
+            
         }
 
         public async Task Update(TEntity entity)
         {
-            using (TContext context = new TContext())
-            {
-                context.Entry(entity).State = EntityState.Modified;
-                await context.SaveChangesAsync();
-            }
+
+
+            var ent = _dataContext.Set<TEntity>().Find(entity);
+             _dataContext.Update(ent);
+            await _dataContext.SaveChangesAsync();
+
         }
     }
 }

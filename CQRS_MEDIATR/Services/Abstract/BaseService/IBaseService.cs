@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace CQRS_MEDIATR.Services.Abstract.BaseService
 {
-    public interface IBaseService<T> where T : class,new()
+    public interface IBaseService<T> 
     {
         Task<T> GetStudent(Expression<Func<T, bool>> expression);
         Task<List<T>> GetStudents(Expression<Func<T, bool>> expression = null);
