@@ -10,16 +10,26 @@ namespace CQRS_MEDIATR.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private IBaseService<Student> _service;
+        private IStudentService _service;
         public StudentsController(IStudentService service)
         {
             _service = service;
         }
         [HttpGet("[action]")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        public async Task<ActionResult<ServiceResponse<Student>>> GetStudent(int id)
         {
-            var result = await _service.GetStudent(p => p.Id == id);
-            return Ok(result);
+            var result = await _service.Get(p => p.Id == id);
+            var response=new ServiceResponse<Student>()
+            {
+                Data = result
+            };
+            if (!response.Success)
+            {
+                response.Success = false;
+                response.Message = "wrong";
+                return NotFound(response);
+            }
+            return Ok(response);
         }
     }
 }

@@ -5,8 +5,8 @@ namespace CQRS_MEDIATR.Services.Abstract.BaseService
 {
     public interface IBaseService<T> 
     {
-        Task<T> GetStudent(Expression<Func<T, bool>> expression);
-        Task<List<T>> GetStudents(Expression<Func<T, bool>> expression = null);
+        Task<T> Get(Expression<Func<T, bool>> expression);
+        Task<List<T>> GetAll(Expression<Func<T, bool>> expression = null);
         Task Add(T entity);
         Task Delete(T entity);
         Task Update(T entity);

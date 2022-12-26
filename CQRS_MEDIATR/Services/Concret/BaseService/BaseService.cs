@@ -31,14 +31,14 @@ namespace CQRS_MEDIATR.Services.Concret.BaseService
 
         }
 
-        public async Task<TEntity> GetStudent(Expression<Func<TEntity, bool>> expression)
+        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> expression)
         {
             
                 return await _dataContext.Set<TEntity>().FirstOrDefaultAsync(expression);
             
         }
 
-        public async Task<List<TEntity>> GetStudents(Expression<Func<TEntity, bool>> expression = null)
+        public async Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>> expression = null)
         {
             
                 return expression == null ? await _dataContext.Set<TEntity>().ToListAsync() :
