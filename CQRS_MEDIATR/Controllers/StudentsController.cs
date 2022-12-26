@@ -10,7 +10,7 @@ namespace CQRS_MEDIATR.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        //Tomorrow i start to use cqrs architectural and mediatr  design patterns
+        //Tomorrow i will start to use cqrs architectural and mediatr  design patterns
         private IStudentService _service;
         public StudentsController(IStudentService service)
         {
