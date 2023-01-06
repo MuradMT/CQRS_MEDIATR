@@ -1,5 +1,7 @@
 global using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using CQRS_MEDIATR.Data;
+using CQRS_MEDIATR.Mapping;
 using CQRS_MEDIATR.Model;
 using CQRS_MEDIATR.Services.Abstract.BaseService;
 using CQRS_MEDIATR.Services.Abstract.StudentService;
@@ -14,6 +16,7 @@ namespace CQRS_MEDIATR
             var builder = WebApplication.CreateBuilder(args);
             // Add services to the container.
             builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddAutoMapper(typeof(Map));
             builder.Services.AddDbContext<DataContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbKey")));
             builder.Services.AddControllers();
@@ -29,7 +32,7 @@ namespace CQRS_MEDIATR
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
