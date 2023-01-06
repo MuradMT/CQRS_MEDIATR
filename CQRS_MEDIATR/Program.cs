@@ -17,6 +17,7 @@ namespace CQRS_MEDIATR
             // Add services to the container.
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddAutoMapper(typeof(Map));
+            
             builder.Services.AddDbContext<DataContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbKey")));
             builder.Services.AddControllers();
