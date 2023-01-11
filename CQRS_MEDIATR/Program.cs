@@ -1,4 +1,5 @@
 global using Microsoft.EntityFrameworkCore;
+global using MediatR;
 using AutoMapper;
 using CQRS_MEDIATR.Data;
 using CQRS_MEDIATR.Mapping;
@@ -6,6 +7,8 @@ using CQRS_MEDIATR.Model;
 using CQRS_MEDIATR.Services.Abstract.BaseService;
 using CQRS_MEDIATR.Services.Abstract.StudentService;
 using CQRS_MEDIATR.Services.Concret.StudentService;
+using MediatR;
+using System.Reflection;
 
 namespace CQRS_MEDIATR
 {
@@ -17,7 +20,7 @@ namespace CQRS_MEDIATR
             // Add services to the container.
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddAutoMapper(typeof(Map));
-            
+            builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
             builder.Services.AddDbContext<DataContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbKey")));
             builder.Services.AddControllers();
